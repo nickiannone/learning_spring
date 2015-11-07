@@ -8,6 +8,7 @@
     <property name="build.dir" value="${web.dir}/WEB-INF/classes"/>
     <property name="name" value="learning_spring"/>
 	<property name="test.dir" value="test" />
+	<property name="test.results.dir" value="test-results" />
 	
     <path id="master-classpath">
         <fileset dir="${web.dir}/WEB-INF/lib">
@@ -29,6 +30,8 @@
         <echo message=""/>
         <echo message="Available targets are:"/>
         <echo message=""/>
+    	<echo message="buildtests--> Build all tests"/>
+    	<echo message="tests     --> Run tests"/>
         <echo message="build     --> Build the application"/>
         <echo message="deploy    --> Deploy application as directory"/>
         <echo message="deploywar --> Deploy application as a WAR file"/>
@@ -53,25 +56,16 @@
 		<junit printsummary="on"
 			fork="false"
 			haltonfailure="false"
-			failureproperty="tests.failed"
-			showoutput="true" />
-		<classpath refid="master-classpath"/>
-		<formatter type="brief" usefile="false"/>
-		<batchtest>
-			<fileset dir="${build.dir}">
-				<include name="**/*Tests.*"/>
-			</fileset>
-		</batchtest>
+			showoutput="true">
+			<classpath refid="master-classpath"/>
+			<formatter type="xml"/>
+			<batchtest fork="yes" todir="${test.results.dir}">
+				<fileset dir="${build.dir}">
+					<include name="**/*Tests.*"/>
+				</fileset>
+			</batchtest>
+		</junit>
 	</target>
-
-	<fail if="tests.failed">
-		tests.failed=${tests.failed}
-		***********************************************************
-		***********************************************************
-		****  One or more tests failed!  Check the output ...  ****
-		***********************************************************
-		***********************************************************
-	</fail>
 	
     <target name="build" description="Compile main source tree java files">
         <mkdir dir="${build.dir}"/>
