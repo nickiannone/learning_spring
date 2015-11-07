@@ -11,6 +11,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
+import java.util.Date;
+
 public class HelloController implements Controller {
 
 	protected final Log logger = LogFactory.getLog(getClass());
@@ -18,7 +20,9 @@ public class HelloController implements Controller {
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		
-		logger.info("Returning hello view");
-		return new ModelAndView("hello.jsp");
+		String now = (new Date()).toString();
+		
+		logger.info("Returning hello view with " + now);
+		return new ModelAndView("WEB-INF/jsp/hello.jsp", "now", now);
 	}
 }
